@@ -7,12 +7,10 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <style>
       .screen {display: none;}
-
-      /* #content {text-indent: 20px;} */
 
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -71,16 +69,23 @@
 
       <!-- Content of Home/Instructions Screen -->
       <div class="screen" id="Home">
-        <h1 id="home">Home</h1>
+        <h1 id="home" class="bg-primary text-white">Home</h1>
         <p>This App allows you to search for City of Chicago City-Owned Land Inventory data</p>
-        <p>For more information about the data, visit: <a href="https://dev.socrata.com/foundry/data.cityofchicago.org/aksk-kvfp">City of Chicago City-Owned Land Inventory data</a></p>
+
         <h5 id="instructions">Instructions</h5>
-        <p>to get started, navigate to the Form screen, make your selection and then search. You can view a list of results on the Results screen or view a map of the results on the Map screen.</p>
+        <p>To get started,<br>
+          1) Navigate to the Form screen.<br>
+          2) Make your selection and then search.<br>
+          3) You can view a collection of results on the Data screen.<br>
+          4) View a map of the results on the Map screen.<br>
+          5) Visit the About screen for more information about the developer of this app.</p>
+
+        <p>For more information about the data, visit: <a href="https://dev.socrata.com/foundry/data.cityofchicago.org/aksk-kvfp">City of Chicago City-Owned Land Inventory data</a></p>
       </div>
 
       <!-- Content of Form Screen -->
       <div class="screen" id="Form">
-        <h1>Search</h1>
+        <h1 class="bg-primary text-white">Search</h1>
         <form id="Form Screen Form">
           <label for="input">
             Ward Number <br>
@@ -92,12 +97,12 @@
 
       <!-- Content of Data Screen -->
       <div class="screen" id="Data">
-        <h1>Search Results</h1>
+        <h1 class="bg-primary text-white">Search Results</h1>
         <h6>The following are the results of your search</h6>
         
         <div class="row">
-          
-          <div class="card" id="keep">
+
+          <div class="card shadow p-3 mb-5 bg-body rounded" id="keep">
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
               <h6 class="card-subtitle1 mb-2 text-muted">Card subtitle1</h6>
@@ -110,8 +115,10 @@
 
       <!-- Content of About Screen -->
       <div class="screen" id="About">
-        <h1>About</h1>
+        <h1 class="bg-primary text-white">About</h1>
         <P>This app is built by <b>Rahul Kakarlapudi</b></p>
+        <p>Pursuing a bachelor’s degree in computer science aimed at attaining skills prominent in the software world and research the interdisciplinary application of Artificial Intelligence. Three-year experience working with C++ and active involvement in STEM challenges and volunteering activities that demand team spirit, leadership skills, and technical knowledge.
+        </p>
       </div>
 
     </div>
@@ -158,9 +165,11 @@
 
       // store the ward number that is entered by the user
       let chosenWardNum = -1;
+
+      // array to store all the markers on the map
       let markers = [];
 
-      // this method updates chosenWardNum with the user entered ward number
+      // this method generates the cards and the markers based on the search
       let getWardNum = () => {
         
         // remove all the cards except the first one
@@ -174,6 +183,7 @@
           marker.setMap(null);
         }
 
+        // determine the user input for ward number
         let inputText = document.querySelector("#wardNumber");
         chosenWardNum = inputText.value;
 
@@ -235,7 +245,7 @@
             markers.push(marker);
 
             // concatinate the innerText of each card to form the content of the text field
-            let content = cardClone.querySelector(".card-title").innerText + "\n" + cardClone.querySelector(".card-subtitle1.mb-2.text-muted").innerText + "\n" + cardClone.querySelector(".card-subtitle2.mb-2.text-muted").innerText;
+            let content = dataLineOne + "\n" + dataLineTwo + "\n" + pin;
 
             // create an info window
             let infoWindow = new google.maps.InfoWindow({
@@ -256,7 +266,6 @@
           }
         });
       }
-
     </script>
     
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
