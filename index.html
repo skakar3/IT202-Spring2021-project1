@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>repl.it</title>
+    <title>IT202-Spring2021-project1</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
 
     <!-- Bootstrap -->
@@ -69,28 +69,28 @@
         <form id="Form Screen Form">
           <label for="input">
             Ward Number <br>
-            <input id="wardNumber" name="wardNumber" type="number">
+            <input id="wardNumber" name="wardNumber" type="number" placeholder="enter a ward number">
           </label><br>
-          <input id="searchButton" type="submit" value="Search" onclick="getWardNum()">
+          <button id="searchButton" type="button" onclick="getWardNum()">Search</button>
         </form>
       </div>
 
+      <!-- Content of Data Screen -->
       <div id="Data">
         <h1>Search Results</h1>
         <h6>The following are the results of your search</h6>
         
         <div class="row">
+          
           <div class="card" >
             <div class="card-body">
               <h5 class="card-title">Card title</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="card-link">Card link</a>
+              <h6 class="card-subtitle1 mb-2 text-muted">Card subtitle1</h6>
+              <h6 class="card-subtitle2 mb-2 text-muted">Card subtitle2</h6>
             </div>
           </div>
-        </div>
-
-        
+          
+        </div>        
       </div>
 
       
@@ -105,6 +105,18 @@
 
 
     <script>
+      // store the ward number that is entered by the user
+      let chosenWardNum = -1;
+
+      // this method updates chosenWardNum with the user entered ward number
+      let getWardNum = () => {
+        let inputText = document.querySelector("#wardNumber");
+        chosenWardNum = inputText.value;
+        // console.log(chosenWardNum);
+      }
+
+
+
 
     </script>
   </body>
