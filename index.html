@@ -11,6 +11,7 @@
 
 
     <style>
+      .screen {display: none;}
     </style>
 
 
@@ -24,11 +25,11 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="topNav">
           <ul class="navbar-nav">
 
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#" data-screen="Home/Instructions">Home/Instructions</a>
+              <a class="nav-link active" aria-current="page" href="#" data-screen="Home">Home/Instructions</a>
             </li>
             
             <li class="nav-item">
@@ -55,7 +56,7 @@
     <div id="content">
 
       <!-- Content of Home/Instructions Screen -->
-      <div id="Home/Instructions">
+      <div class="screen" id="Home">
         <h1 id="home">Home</h1>
         <p>This App allows you to search for City of Chicago City-Owned Land Inventory data</p>
         <p>For more information about the data, visit: <a href="https://dev.socrata.com/foundry/data.cityofchicago.org/aksk-kvfp">City of Chicago City-Owned Land Inventory data</a></p>
@@ -64,7 +65,7 @@
       </div>
 
       <!-- Content of Form Screen -->
-      <div id="Form">
+      <div class="screen" id="Form">
         <h1>Search</h1>
         <form id="Form Screen Form">
           <label for="input">
@@ -76,7 +77,7 @@
       </div>
 
       <!-- Content of Data Screen -->
-      <div id="Data">
+      <div class="screen" id="Data">
         <h1>Search Results</h1>
         <h6>The following are the results of your search</h6>
         
@@ -93,9 +94,13 @@
         </div>        
       </div>
 
+      <!-- Content of Map Screen -->
+      <div class="screen" id="Map">
+        <h1>Map</h1>
+      </div>
       
       <!-- Content of About Screen -->
-      <div id="About">
+      <div class="screen" id="About">
         <h1>About</h1>
         <P>This app is built by <b>Rahul Kakarlapudi</b></p>
       </div>
@@ -103,6 +108,26 @@
 
     </div>
 
+    <script>
+      document.querySelector("#Home").style.display= "block";
+
+      let navAnchors = document.querySelectorAll("div#topNav a");
+
+      navAnchors.forEach( (anchor) => {
+        anchor.addEventListener("click", (event) => {
+          document.querySelectorAll(".screen").forEach( (screen) => {
+            screen.style.display = "none";
+          })
+
+          let screen = event.target.getAttribute("data-screen");
+
+          let targetScreen = document.querySelector("#" + screen);
+
+          targetScreen.style.display = "block";
+
+        })
+      })
+    </script>
 
     <script>
       // store the ward number that is entered by the user
@@ -112,48 +137,46 @@
       let getWardNum = () => {
         let inputText = document.querySelector("#wardNumber");
         chosenWardNum = inputText.value;
-        // console.log(chosenWardNum);
-      }
-      
+
+        let url = "https://data.cityofchicago.org/resource/aksk-kvfp.json" + "?ward=" + chosenWardNum;
+
         // fetch data from the City of Chicago City-Owned Land Inventory
-      fetch ("https://data.cityofchicago.org/resource/aksk-kvfp.json")
-    
-      .then ( (response)=> {
-        return response.json()
-      })
+        fetch (url)
+      
+        .then ( (response)=> {
+          return response.json()
+        })
+              
+        .then ( (json) => {
+          // loop to iterate over each land element in the City-Owned Land Inventory
+          for (let land of json) {
+            // clone the existing card
+            let cardClone = document.querySelector(".card").cloneNode(true);
+
+            // determine the community_area_name and the pin of the land
+            let community_area_name = land.community_area_name;
+            let pin = land.pin;
+            let dataLineOne = community_area_name + " - " + pin;
             
-      .then ( (json) => {
-        // loop to iterate over each land element in the City-Owned Land Inventory
-        for (let land of json) {
-          // clone the existing card
-          let cardClone = document.querySelector(".card").cloneNode(true);
+            // update the card title to contain community_area_name - pin
+            cardClone.querySelector(".card-title").innerText = dataLineOne;
 
-          // determine the community_area_name and the pin of the land
-          let community_area_name = land.community_area_name;
-          let pin = land.pin;
-          let dataLineOne = community_area_name + " - " + pin;
-          
-          // update the card title to contain community_area_name - pin
-          cardClone.querySelector(".card-title").innerText = dataLineOne;
+            //determine the address and the square footage of the land
+            let address = land.address;
+            let sqft = land.sq_ft.toString();
+            let dataLineTwo = address + " - " + sqft;
+            
+            // update the card subtitle1 to contain address - square footage
+            cardClone.querySelector(".card-subtitle1.mb-2.text-muted").innerText = dataLineTwo;
+            
+            // update the card subtitle2 to contain the pin
+            cardClone.querySelector(".card-subtitle2.mb-2.text-muted").innerText = pin;
 
-          //determine the address and the square footage of the land
-          let address = land.address;
-          let sqft = land.sq_ft.toString();
-          let dataLineTwo = address + " - " + sqft;
-          
-          // update the card subtitle1 to contain address - square footage
-          cardClone.querySelector(".card-subtitle1.mb-2.text-muted").innerText = dataLineTwo;
-          
-          // update the card subtitle2 to contain the pin
-          cardClone.querySelector(".card-subtitle2.mb-2.text-muted").innerText = pin;
-
-          // append the cardClone to the row
-          document.querySelector(".row").appendChild(cardClone);
-        }
-      });
-
-
-
+            // append the cardClone to the row
+            document.querySelector(".row").appendChild(cardClone);
+          }
+        });
+      }
 
     </script>
   </body>
