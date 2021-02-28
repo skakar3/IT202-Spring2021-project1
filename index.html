@@ -32,15 +32,6 @@
 
   </head>
   <body>
-    <div id="map"></div>
-
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=&v=weekly"
-      async
-    ></script>
-
-
 
     <!-- navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -122,6 +113,12 @@
       <div class="screen" id="Map">
         <h1>Map</h1>
       </div>
+        
+      <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
       
       <!-- Content of About Screen -->
       <div class="screen" id="About">
