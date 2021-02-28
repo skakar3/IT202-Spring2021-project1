@@ -136,6 +136,16 @@
           // update the card title to contain community_area_name - pin
           cardClone.querySelector(".card-title").innerText = dataLineOne;
 
+          //determine the address and the square footage of the land
+          let address = land.address;
+          let sqft = land.sq_ft.toString();
+          let dataLineTwo = address + " - " + sqft;
+          
+          // update the card subtitle1 to contain address - square footage
+          cardClone.querySelector(".card-subtitle1.mb-2.text-muted").innerText = dataLineTwo;
+          
+          // update the card subtitle2 to contain the pin
+          cardClone.querySelector(".card-subtitle2.mb-2.text-muted").innerText = pin;
 
           // append the cardClone to the row
           document.querySelector(".row").appendChild(cardClone);
