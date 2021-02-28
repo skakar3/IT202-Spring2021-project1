@@ -114,6 +114,33 @@
         chosenWardNum = inputText.value;
         // console.log(chosenWardNum);
       }
+      
+        // fetch data from the City of Chicago City-Owned Land Inventory
+      fetch ("https://data.cityofchicago.org/resource/aksk-kvfp.json")
+    
+      .then ( (response)=> {
+        return response.json()
+      })
+            
+      .then ( (json) => {
+        // loop to iterate over each land element in the City-Owned Land Inventory
+        for (let land of json) {
+          // clone the existing card
+          let cardClone = document.querySelector(".card").cloneNode(true);
+
+          // determine the community_area_name and the pin of the land
+          let community_area_name = land.community_area_name;
+          let pin = land.pin;
+          let dataLineOne = community_area_name + " - " + pin;
+          
+          // update the card title to contain community_area_name - pin
+          cardClone.querySelector(".card-title").innerText = dataLineOne;
+
+
+          // append the cardClone to the row
+          document.querySelector(".row").appendChild(cardClone);
+        }
+      });
 
 
 
