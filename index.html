@@ -156,6 +156,7 @@
 
       // store the ward number that is entered by the user
       let chosenWardNum = -1;
+      let markers = [];
 
       // this method updates chosenWardNum with the user entered ward number
       let getWardNum = () => {
@@ -165,10 +166,16 @@
         for(let card of cards) {
           card.remove();
         }
+        
+        // remove all the markers
+        for (let marker of markers) {
+          marker.setMap(null);
+        }
 
         let inputText = document.querySelector("#wardNumber");
         chosenWardNum = inputText.value;
 
+        // determine the url
         let url = "https://data.cityofchicago.org/resource/aksk-kvfp.json" + "?ward=" + chosenWardNum;
 
         // fetch data from the City of Chicago City-Owned Land Inventory
@@ -211,7 +218,8 @@
             
             // update the card subtitle2 to contain the pin
             cardClone.querySelector(".card-subtitle2.mb-2.text-muted").innerText = pin;
-
+            
+            // determine the longitudes and latitudes
             let lat = parseFloat(land.latitude);
             let lng = parseFloat(land.longitude);
 
@@ -220,14 +228,20 @@
               position: {lat: lat, lng: lng},
               map: map
             });
+            
+            // add the marker to the collection of markers
+            markers.push(marker);
 
+            // concatinate the innerText of each card to form the content of the text field
             let content = cardClone.querySelector(".card-title").innerText + "\n" + cardClone.querySelector(".card-subtitle1.mb-2.text-muted").innerText + "\n" + cardClone.querySelector(".card-subtitle2.mb-2.text-muted").innerText;
 
+            // create an info window
             let infoWindow = new google.maps.InfoWindow({
               content: content,
               maxWidth: 200,
             });
             
+            // add a listener to the marker to listen for click events
             marker.addListener("click", () => {
               infoWindow.open(map, marker);
             });
